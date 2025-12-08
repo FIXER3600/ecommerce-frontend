@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🛍️ Frontend - Ecommerce
 
-## Getting Started
+Este é o **Frontend** do projeto de Ecommerce, desenvolvido em **Next.js** com **React** para o teste de Pessoa Desenvolvedora JR da CapLink.  
+Ele fornece a interface para clientes e vendedores interagirem com a aplicação, incluindo autenticação, carrinho de compras, favoritos, pedidos e dashboard da loja.
 
-First, run the development server:
+---
 
+## 🚀 Tecnologias utilizadas
+- **Next.js 13+** (App Router, Server/Client Components)  
+- **React**  
+- **TypeScript**  
+- **Chart.js + react-chartjs-2** (gráficos do dashboard)  
+- **CSS-in-JS / Inline Styles** (estilização rápida)  
+- **API Fetch personalizada (`apiFetch`)** para comunicação com o backend  
+
+---
+
+## 📂 Estrutura principal
+- `auth/` → páginas de **SignIn** e **SignUp**  
+- `cart/` → carrinho de compras com resumo lateral  
+- `favorites/` → lista de favoritos com cards estilizados  
+- `orders/` → pedidos do cliente  
+- `products/` → criação de produto e upload via CSV  
+- `dashboard/` → dashboard do vendedor com gráficos  
+
+---
+
+## ⚙️ Instalação e execução
+
+### 1. Clonar o repositório
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/FIXER3600/ecommerce-frontend.git
+cd ecommerce-frontend
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Instalar dependências
+```bash
+npm install
+# ou
+yarn install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Rodar em ambiente de desenvolvimento
+```bash
+npm run dev
+# ou
+yarn dev
+```
+A aplicação estará disponível em:  
+👉 `http://localhost:3000`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🔑 Configuração
+- O frontend consome a API do backend (por padrão em `http://localhost:3000`).  
+- O token JWT é armazenado em **localStorage** e **cookies** para autenticação.  
+- Variáveis de ambiente podem ser configuradas em `.env.local`:
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3000
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📊 Funcionalidades
+- **Autenticação**: login e cadastro com persistência de token.  
+- **Carrinho**: adicionar/remover itens, limpar carrinho, checkout.  
+- **Favoritos**: salvar e remover produtos favoritos.  
+- **Pedidos**: histórico de compras do cliente.  
+- **Dashboard do vendedor**: resumo de vendas, receita, produtos e gráficos interativos.  
+- **Criação de produtos**: formulário e upload em massa via CSV.  
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🎨 Padrão visual
+- Cards com **box-shadow** e sem borda.  
+- Paleta principal: **verde `#189A52`**.  
+- Botões estilizados com hover escurecendo.  
+- Layouts responsivos com grid/flex.  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📦 Build para produção
+```bash
+npm run build
+npm run start
+```
