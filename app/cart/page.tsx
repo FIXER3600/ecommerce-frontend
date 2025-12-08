@@ -96,7 +96,6 @@ export default function Cart() {
           gap: "2rem",
         }}
       >
-        {/* Coluna esquerda - itens do carrinho */}
         <div style={{ flex: 2 }}>
           <div
             style={{
@@ -186,8 +185,6 @@ export default function Cart() {
             <p>Seu carrinho está vazio.</p>
           )}
         </div>
-
-        {/* Coluna direita - resumo da compra */}
         {cart?.items?.length ? (
           <div
             style={{

@@ -80,8 +80,6 @@ export default function CreateProductPage() {
       >
         Criar Produto
       </h1>
-
-      {/* Formulário de criação de produto */}
       <form
         onSubmit={handleCreateProduct}
         style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
@@ -172,8 +170,6 @@ export default function CreateProductPage() {
       </form>
 
       <hr style={{ margin: "2rem 0" }} />
-
-      {/* Upload de CSV */}
       <h2
         style={{
           fontSize: "1.4rem",
