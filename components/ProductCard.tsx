@@ -66,18 +66,11 @@ export default function ProductCard({ product }: Props) {
   async function handleAddToCart() {
     const token = localStorage.getItem("token") || "";
     try {
-      await fetch(`http://localhost:3000/cart/items`, {
+        await apiFetch("/cart/items", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          productId: product.id,
-          quantity: 1,
-        }),
-      });
-      alert("Produto adicionado ao carrinho!");
+        body: JSON.stringify({ productId: product.id, quantity: 1 }),
+        }, token);
+        alert("Produto adicionado ao carrinho!");
     } catch (err) {
       alert("Erro ao adicionar ao carrinho");
       console.error(err);

@@ -1,3 +1,5 @@
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 export async function apiFetch(path: string, options: RequestInit = {}, token?: string) {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
@@ -8,7 +10,7 @@ export async function apiFetch(path: string, options: RequestInit = {}, token?: 
     headers["Authorization"] = `Bearer ${token}`;
   }
 
-  const res = await fetch(`http://localhost:3000${path}`, {
+  const res = await fetch(`${API_URL}${path}`, {
     ...options,
     headers,
   });

@@ -17,31 +17,21 @@ export default function Cart() {
     if (!token) return;
 
     async function loadCart() {
-      try {
-        const res = await fetch("http://localhost:3000/cart", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (!res.ok) throw new Error("Erro ao carregar carrinho");
-        const data = await res.json();
-        setCart(data);
-      } catch (err: any) {
-        setError(err.message);
-      }
+    try {
+      const data = await apiFetch("/cart", {}, token);
+      setCart(data);
+    } catch (err: any) {
+      setError(err.message);
     }
+  }
+
 
     loadCart();
   }, [token]);
 
   async function handleCheckout() {
     try {
-      const res = await fetch("http://localhost:3000/orders/checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
+      const res = await apiFetch("/orders/checkout", { method: "POST" }, token);
       if (!res.ok) throw new Error(`Erro ao finalizar compra: ${res.status}`);
       await res.json();
       alert("Compra finalizada com sucesso!");
@@ -70,10 +60,8 @@ export default function Cart() {
     if (!window.confirm("Tem certeza que deseja remover este item?")) return;
 
     try {
-      const res = await fetch(`http://localhost:3000/cart/items/${productId}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await apiFetch(`/cart/items/${productId}`, { method: "DELETE" }, token);
+
       if (!res.ok) throw new Error("Erro ao remover item");
 
       setCart((prev: any) => ({

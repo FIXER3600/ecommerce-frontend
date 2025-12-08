@@ -1,5 +1,6 @@
 "use client";
 
+import { apiFetch } from "@/lib/api";
 import { useState } from "react";
 
 export default function AccountMenu({ role }: { role: "SELLER" | "CLIENT" | null }) {
@@ -15,20 +16,13 @@ export default function AccountMenu({ role }: { role: "SELLER" | "CLIENT" | null
     if (!confirmed) return;
 
     try {
-      if (role === "CLIENT") {
-        await fetch("http://localhost:3000/auth/client", {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        alert("Conta excluída com sucesso!");
-      } else {
-        await fetch("http://localhost:3000/seller/deactivate", {
-          method: "PUT",
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        alert("Conta desativada com sucesso!");
-      }
-     
+    	if (role === "CLIENT") {
+  		await apiFetch("/auth/client", { method: "DELETE" }, token);
+  		alert("Conta excluída com sucesso!");
+	} else {
+  		await apiFetch("/seller/deactivate", { method: "PUT" }, token);
+  		alert("Conta desativada com sucesso!");
+	}  
     } catch (err) {
       console.error(err);
       alert("Erro ao processar operação");

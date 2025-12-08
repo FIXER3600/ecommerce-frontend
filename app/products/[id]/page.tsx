@@ -1,5 +1,6 @@
 "use client";
 
+import { apiFetch } from "@/lib/api";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -23,12 +24,7 @@ export default function ProductPage() {
     async function fetchProduct() {
       try {
         const token = localStorage.getItem("token") || "";
-        const res = await fetch(`http://localhost:3000/products/${id}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await apiFetch(`/products/${id}`, {}, token);
 
         if (!res.ok) throw new Error("Erro ao buscar produto");
         const data = await res.json();
@@ -49,17 +45,11 @@ export default function ProductPage() {
   async function handleAddToCart() {
     const token = localStorage.getItem("token") || "";
     try {
-      await fetch(`http://localhost:3000/cart/items`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          productId: product.id,
-          quantity: 1,
-        }),
-      });
+      await apiFetch("/cart/items", {
+      method: "POST",
+      body: JSON.stringify({ productId: product.id, quantity: 1 }),
+      }, token);
+
       alert("Produto adicionado ao carrinho!");
     } catch (err) {
       alert("Erro ao adicionar ao carrinho");

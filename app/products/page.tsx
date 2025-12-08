@@ -42,13 +42,7 @@ export default function CreateProductPage() {
       const formData = new FormData();
       formData.append("file", csvFile);
 
-      const res = await fetch("http://localhost:3000/products/upload-csv", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
+      const res = await apiFetch("/products/upload-csv", { method: "POST", body: formData }, token);
 
       if (!res.ok) throw new Error("Erro ao enviar CSV");
       alert("CSV enviado e produtos cadastrados com sucesso!");
