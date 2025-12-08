@@ -5,15 +5,32 @@ import { useEffect, useState } from "react";
 export default function Favorites() {
   const [favorites, setFavorites] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const token = localStorage.getItem("token") || "";
+  const [token, setToken] = useState<string>("");
 
   useEffect(() => {
-    apiFetch("/customer/favorites", {}, token).then(setFavorites).catch(console.error);
+    if (typeof window !== "undefined") {
+      setToken(localStorage.getItem("token") || "");
+    }
   }, []);
 
+  useEffect(() => {
+    if (!token) return;
+
+    async function loadFavorites() {
+      try {
+        const data = await apiFetch("/customer/favorites", {}, token);
+        setFavorites(data);
+      } catch (err: any) {
+        setError(err.message);
+      }
+    }
+
+    loadFavorites();
+  }, [token]);
+
   async function handleRemoveFavorite(favoriteId: string) {
-    const confirmed = window.confirm("Tem certeza que deseja remover este item dos favoritos?");
-    if (!confirmed) return;
+    if (!window.confirm("Tem certeza que deseja remover este item dos favoritos?")) return;
+
     try {
       await apiFetch(`/customer/favorites/${favoriteId}`, { method: "DELETE" }, token);
       setFavorites((prev) => prev.filter((fav) => fav.id !== favoriteId));
@@ -44,7 +61,9 @@ export default function Favorites() {
       >
         Meus Favoritos
       </h1>
+
       {error && <p style={{ color: "red" }}>Erro: {error}</p>}
+
       {favorites.length ? (
         <div
           style={{
@@ -65,12 +84,8 @@ export default function Favorites() {
                 display: "flex",
                 flexDirection: "column",
               }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.transform = "scale(1.02)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.transform = "scale(1)")
-              }
+              onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
+              onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
             >
               <img
                 src={fav.product?.imageUrl || ""}
@@ -100,10 +115,12 @@ export default function Favorites() {
                 <p style={{ margin: "0 0 0.5rem 0", fontWeight: "bold" }}>
                   Preço: R$ {fav.product?.price}
                 </p>
-                <p style={{ margin: "0 0 0.5rem 0", color: "#6b7280" }}>
-                  Publicado em:{" "}
-                  {new Date(fav.product?.publishedAt).toLocaleDateString("pt-BR")}
-                </p>
+                {fav.product?.publishedAt && (
+                  <p style={{ margin: "0 0 0.5rem 0", color: "#6b7280" }}>
+                    Publicado em:{" "}
+                    {new Date(fav.product.publishedAt).toLocaleDateString("pt-BR")}
+                  </p>
+                )}
               </div>
               <button
                 onClick={() => handleRemoveFavorite(fav.id)}
