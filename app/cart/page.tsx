@@ -5,9 +5,17 @@ import { useEffect, useState } from "react";
 export default function Cart() {
   const [cart, setCart] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
-  const token = localStorage.getItem("token") || "";
+  const [token, setToken] = useState<string>("");
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      setToken(localStorage.getItem("token") || "");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!token) return;
+
     async function loadCart() {
       try {
         const res = await fetch("http://localhost:3000/cart", {
@@ -20,8 +28,9 @@ export default function Cart() {
         setError(err.message);
       }
     }
+
     loadCart();
-  }, []);
+  }, [token]);
 
   async function handleCheckout() {
     try {
@@ -33,9 +42,7 @@ export default function Cart() {
         },
       });
 
-      if (!res.ok) {
-        throw new Error(`Erro ao finalizar compra: ${res.status}`);
-      }
+      if (!res.ok) throw new Error(`Erro ao finalizar compra: ${res.status}`);
       await res.json();
       alert("Compra finalizada com sucesso!");
       setCart({ ...cart, items: [] });
@@ -46,8 +53,8 @@ export default function Cart() {
 
   async function removeAll() {
     if (!cart?.items?.length) return;
-    const confirmed = window.confirm("Tem certeza que deseja limpar o carrinho?");
-    if (!confirmed) return;
+    if (!window.confirm("Tem certeza que deseja limpar o carrinho?")) return;
+
     try {
       await apiFetch("/cart/clear", {
         method: "DELETE",
@@ -60,14 +67,15 @@ export default function Cart() {
   }
 
   async function handleRemoveItem(productId: string) {
-    const confirmed = window.confirm("Tem certeza que deseja remover este item?");
-    if (!confirmed) return;
+    if (!window.confirm("Tem certeza que deseja remover este item?")) return;
+
     try {
       const res = await fetch(`http://localhost:3000/cart/items/${productId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error("Erro ao remover item");
+
       setCart((prev: any) => ({
         ...prev,
         items: prev.items.filter((item: any) => item.productId !== productId),
