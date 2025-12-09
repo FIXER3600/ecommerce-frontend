@@ -1,3 +1,4 @@
+```markdown
 # 🛍️ Frontend - Ecommerce
 
 Este é o **Frontend** do projeto de Ecommerce, desenvolvido em **Next.js** com **React** para o teste de Pessoa Desenvolvedora JR da CapLink.  
@@ -83,4 +84,11 @@ NEXT_PUBLIC_API_URL=http://localhost:3000
 ```bash
 npm run build
 npm run start
+```
+
+---
+
+## 🌐 Deploy
+O frontend está disponível em produção através do Vercel:  
+👉 [ecommerce-frontend-sooty-two.vercel.app](https://ecommerce-frontend-sooty-two.vercel.app)
 ```
