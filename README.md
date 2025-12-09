@@ -1,4 +1,3 @@
-```markdown
 # 🛍️ Frontend - Ecommerce
 
 Este é o **Frontend** do projeto de Ecommerce, desenvolvido em **Next.js** com **React** para o teste de Pessoa Desenvolvedora JR da CapLink.  
