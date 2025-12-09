@@ -1,34 +1,78 @@
 "use client";
 
-import { useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { apiFetch } from "@/lib/api";
 
-export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export default function EditProductPage() {
+  const params = useParams();
+  const router = useRouter();
+  const id = params?.id as string;
+
+  const [product, setProduct] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token") || "";
+    apiFetch(`/products/${id}`, { method: "GET" }, token)
+      .then(setProduct)
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, [id]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    const token = localStorage.getItem("token") || "";
+
     try {
-      const res = await apiFetch(
-        "/auth/login",
+      await apiFetch(
+        `/products/${id}`,
         {
-          method: "POST",
-          body: JSON.stringify({ email, password }),
-        }
+          method: "PUT",
+          body: JSON.stringify(product),
+        },
+        token
       );
-      alert("Login realizado com sucesso!");
-      localStorage.setItem("token", res.token);
-      localStorage.setItem("role", res.role);
+      alert("Produto atualizado com sucesso!");
+      router.push(`/products/${id}`);
     } catch (err) {
-      alert("Erro ao fazer login");
+      console.error(err);
+      alert("Erro ao atualizar produto");
     }
   }
+
+  if (loading)
+    return (
+      <div
+        style={{
+          textAlign: "center",
+          padding: "2rem",
+          fontSize: "1.1rem",
+          color: "#374151",
+        }}
+      >
+        Carregando...
+      </div>
+    );
+
+  if (!product)
+    return (
+      <div
+        style={{
+          textAlign: "center",
+          padding: "2rem",
+          fontSize: "1.1rem",
+          color: "#dc2626",
+        }}
+      >
+        Produto não encontrado
+      </div>
+    );
 
   return (
     <div
       style={{
-        maxWidth: "400px",
+        maxWidth: "500px",
         margin: "3rem auto",
         padding: "2rem",
         backgroundColor: "#fff",
@@ -45,7 +89,7 @@ export default function LoginPage() {
           color: "#189A52",
         }}
       >
-        Login
+        Editar Produto
       </h1>
 
       <form
@@ -53,11 +97,42 @@ export default function LoginPage() {
         style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
       >
         <input
-          type="email"
-          placeholder="E-mail"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
+          type="text"
+          value={product.name}
+          onChange={(e) => setProduct({ ...product, name: e.target.value })}
+          placeholder="Nome"
+          style={{
+            padding: "0.75rem",
+            borderRadius: "6px",
+            border: "1px solid #d1d5db",
+            fontSize: "1rem",
+            outline: "none",
+          }}
+        />
+
+        <textarea
+          value={product.description}
+          onChange={(e) =>
+            setProduct({ ...product, description: e.target.value })
+          }
+          placeholder="Descrição"
+          style={{
+            padding: "0.75rem",
+            borderRadius: "6px",
+            border: "1px solid #d1d5db",
+            fontSize: "1rem",
+            outline: "none",
+            minHeight: "100px",
+          }}
+        />
+
+        <input
+          type="number"
+          value={product.price}
+          onChange={(e) =>
+            setProduct({ ...product, price: Number(e.target.value) })
+          }
+          placeholder="Preço"
           style={{
             padding: "0.75rem",
             borderRadius: "6px",
@@ -68,11 +143,28 @@ export default function LoginPage() {
         />
 
         <input
-          type="password"
-          placeholder="Senha"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
+          type="text"
+          value={product.imageUrl || ""}
+          onChange={(e) =>
+            setProduct({ ...product, imageUrl: e.target.value })
+          }
+          placeholder="URL da imagem"
+          style={{
+            padding: "0.75rem",
+            borderRadius: "6px",
+            border: "1px solid #d1d5db",
+            fontSize: "1rem",
+            outline: "none",
+          }}
+        />
+
+        <input
+          type="number"
+          value={product.stock}
+          onChange={(e) =>
+            setProduct({ ...product, stock: Number(e.target.value) })
+          }
+          placeholder="Quantidade em estoque"
           style={{
             padding: "0.75rem",
             borderRadius: "6px",
@@ -103,7 +195,7 @@ export default function LoginPage() {
             (e.currentTarget.style.backgroundColor = "#189A52")
           }
         >
-          Entrar
+          Salvar alterações
         </button>
       </form>
     </div>
