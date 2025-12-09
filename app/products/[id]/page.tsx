@@ -13,34 +13,32 @@ export default function ProductPage() {
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState<"SELLER" | "CLIENT" | null>(null);
 
-  useEffect(() => {
-    const storedRole = localStorage.getItem("role");
-    if (storedRole === "SELLER" || storedRole === "CLIENT") {
-      setRole(storedRole);
-    } else {
-      setRole(null);
-    }
+useEffect(() => {
+  const storedRole = localStorage.getItem("role");
+  if (storedRole === "SELLER" || storedRole === "CLIENT") {
+    setRole(storedRole);
+  } else {
+    setRole(null);
+  }
 
-    async function fetchProduct() {
-      try {
-        const token = localStorage.getItem("token") || "";
-        const res = await apiFetch(`/products/${id}`, {}, token);
-
-        if (!res.ok) throw new Error("Erro ao buscar produto");
-        const data = await res.json();
-        setProduct(data);
-      } catch (err) {
-        console.error(err);
-        setProduct(null);
-      } finally {
-        setLoading(false);
-      }
+  async function fetchProduct() {
+    try {
+      const token = localStorage.getItem("token") || "";
+      const data = await apiFetch(`/products/${id}`, {}, token);
+      setProduct(data);
+    } catch (err: any) {
+      console.error(err);
+      setProduct(null);
+    } finally {
+      setLoading(false);
     }
+  }
 
-    if (id) {
-      fetchProduct();
-    }
-  }, [id]);
+  if (id) {
+    fetchProduct();
+  }
+}, [id]);
+
 
   async function handleAddToCart() {
     const token = localStorage.getItem("token") || "";
