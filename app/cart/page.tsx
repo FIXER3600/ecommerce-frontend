@@ -29,17 +29,16 @@ export default function Cart() {
     loadCart();
   }, [token]);
 
-  async function handleCheckout() {
-    try {
-      const res = await apiFetch("/orders/checkout", { method: "POST" }, token);
-      if (!res.ok) throw new Error(`Erro ao finalizar compra: ${res.status}`);
-      await res.json();
-      alert("Compra finalizada com sucesso!");
-      setCart({ ...cart, items: [] });
-    } catch (err: any) {
-      alert("Erro ao finalizar compra: " + err.message);
-    }
+async function handleCheckout() {
+  try {
+    await apiFetch("/orders/checkout", { method: "POST" }, token);
+    alert("Compra finalizada com sucesso!");
+    setCart({ ...cart, items: [] });
+  } catch (err: any) {
+    alert("Erro ao finalizar compra: " + err.message);
   }
+}
+
 
   async function removeAll() {
     if (!cart?.items?.length) return;
