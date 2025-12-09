@@ -33,24 +33,24 @@ export default function CreateProductPage() {
     }
   }
 
-  async function handleUploadCsv(e: React.FormEvent) {
-    e.preventDefault();
-    if (!csvFile) return alert("Selecione um arquivo CSV");
+async function handleUploadCsv(e: React.FormEvent) {
+  e.preventDefault();
+  if (!csvFile) return alert("Selecione um arquivo CSV");
 
-    try {
-      const token = localStorage.getItem("token") || "";
-      const formData = new FormData();
-      formData.append("file", csvFile);
+  try {
+    const token = localStorage.getItem("token") || "";
+    const formData = new FormData();
+    formData.append("file", csvFile);
 
-      const res = await apiFetch("/products/upload-csv", { method: "POST", body: formData }, token);
+    await apiFetch("/products/upload-csv", { method: "POST", body: formData }, token);
 
-      if (!res.ok) throw new Error("Erro ao enviar CSV");
-      alert("CSV enviado e produtos cadastrados com sucesso!");
-      setCsvFile(null);
-    } catch (err) {
-      alert("Erro ao enviar CSV");
-    }
+    alert("CSV enviado e produtos cadastrados com sucesso!");
+    setCsvFile(null);
+  } catch (err: any) {
+    alert("Erro ao enviar CSV: " + err.message);
   }
+}
+
 
   return (
     <div
