@@ -5,6 +5,7 @@ export async function apiFetch(path: string, options: RequestInit = {}, token?: 
     ...(options.headers as Record<string, string>),
   };
 
+
   if (!(options.body instanceof FormData)) {
     headers["Content-Type"] = "application/json";
   }
@@ -23,10 +24,11 @@ export async function apiFetch(path: string, options: RequestInit = {}, token?: 
   }
 
   const contentType = res.headers.get("content-type");
-  if (contentType && contentType.includes("application/json")) {
+  if (contentType?.includes("application/json")) {
     return res.json();
   } else {
     return res.text();
   }
 }
+
 
