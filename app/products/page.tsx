@@ -33,64 +33,35 @@ export default function CreateProductPage() {
     }
   }
 
-async function handleUploadCsv(e: React.FormEvent) {
-  e.preventDefault();
-  if (!csvFile) return alert("Selecione um arquivo CSV");
+  async function handleUploadCsv(e: React.FormEvent) {
+    e.preventDefault();
+    if (!csvFile) return alert("Selecione um arquivo CSV");
 
-  try {
-    const token = localStorage.getItem("token") || "";
-    const formData = new FormData();
-    formData.append("file", csvFile);
+    try {
+      const token = localStorage.getItem("token") || "";
+      const formData = new FormData();
+      formData.append("file", csvFile);
 
-    await apiFetch("/products/upload-csv", { method: "POST", body: formData }, token);
+      await apiFetch("/products/upload-csv", { method: "POST", body: formData }, token);
 
-    alert("CSV enviado e produtos cadastrados com sucesso!");
-    setCsvFile(null);
-  } catch (err: any) {
-    alert("Erro ao enviar CSV: " + err.message);
+      alert("CSV enviado e produtos cadastrados com sucesso!");
+      setCsvFile(null);
+    } catch (err: any) {
+      alert("Erro ao enviar CSV: " + err.message);
+    }
   }
-}
-
 
   return (
-    <div
-      style={{
-        maxWidth: "600px",
-        margin: "3rem auto",
-        padding: "2rem",
-        backgroundColor: "#fff",
-        borderRadius: "8px",
-        boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-      }}
-    >
-      <h1
-        style={{
-          fontSize: "1.8rem",
-          fontWeight: "bold",
-          marginBottom: "1.5rem",
-          textAlign: "center",
-          color: "#189A52",
-        }}
-      >
-        Criar Produto
-      </h1>
-      <form
-        onSubmit={handleCreateProduct}
-        style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
-      >
+    <div className="max-w-lg mx-auto my-12 p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+      <h1 className="text-2xl font-bold mb-6 text-center text-green-700">Criar Produto</h1>
+      <form onSubmit={handleCreateProduct} className="flex flex-col gap-4">
         <input
           type="text"
           placeholder="Nome do produto"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
-          style={{
-            padding: "0.75rem",
-            borderRadius: "6px",
-            border: "1px solid #d1d5db",
-            fontSize: "1rem",
-            outline: "none",
-          }}
+          className="p-3 rounded-md border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-green-500"
         />
 
         <input
@@ -99,13 +70,7 @@ async function handleUploadCsv(e: React.FormEvent) {
           value={price}
           onChange={(e) => setPrice(Number(e.target.value))}
           required
-          style={{
-            padding: "0.75rem",
-            borderRadius: "6px",
-            border: "1px solid #d1d5db",
-            fontSize: "1rem",
-            outline: "none",
-          }}
+          className="p-3 rounded-md border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-green-500"
         />
 
         <textarea
@@ -113,14 +78,7 @@ async function handleUploadCsv(e: React.FormEvent) {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
-          style={{
-            padding: "0.75rem",
-            borderRadius: "6px",
-            border: "1px solid #d1d5db",
-            fontSize: "1rem",
-            outline: "none",
-            minHeight: "100px",
-          }}
+          className="p-3 rounded-md border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-green-500 min-h-[120px]"
         />
 
         <input
@@ -129,87 +87,30 @@ async function handleUploadCsv(e: React.FormEvent) {
           value={imageUrl}
           onChange={(e) => setImageUrl(e.target.value)}
           required
-          style={{
-            padding: "0.75rem",
-            borderRadius: "6px",
-            border: "1px solid #d1d5db",
-            fontSize: "1rem",
-            outline: "none",
-          }}
+          className="p-3 rounded-md border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-green-500"
         />
 
         <button
           type="submit"
-          style={{
-            width: "100%",
-            backgroundColor: "#189A52",
-            color: "#fff",
-            border: "none",
-            borderRadius: "6px",
-            padding: "0.75rem",
-            cursor: "pointer",
-            fontSize: "1rem",
-            fontWeight: "600",
-            transition: "background-color 0.2s ease",
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "#157a42")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.backgroundColor = "#189A52")
-          }
+          className="w-full bg-green-600 hover:bg-green-700 transition-colors text-white py-3 rounded-md text-base font-semibold shadow-md"
         >
           Criar Produto
         </button>
       </form>
 
-      <hr style={{ margin: "2rem 0" }} />
-      <h2
-        style={{
-          fontSize: "1.4rem",
-          fontWeight: "bold",
-          marginBottom: "1rem",
-          color: "#189A52",
-          textAlign: "center",
-        }}
-      >
-        Upload de CSV
-      </h2>
-      <form
-        onSubmit={handleUploadCsv}
-        style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
-      >
+      <hr className="my-8 border-gray-300" />
+
+      <h2 className="text-xl font-bold mb-4 text-center text-green-700">Upload de CSV</h2>
+      <form onSubmit={handleUploadCsv} className="flex flex-col gap-4">
         <input
           type="file"
           accept=".csv"
           onChange={(e) => setCsvFile(e.target.files?.[0] || null)}
-          style={{
-            padding: "0.5rem",
-            borderRadius: "6px",
-            border: "1px solid #d1d5db",
-            fontSize: "1rem",
-          }}
+          className="p-2 rounded-md border border-gray-300 text-base"
         />
         <button
           type="submit"
-          style={{
-            width: "100%",
-            backgroundColor: "#189A52",
-            color: "#fff",
-            border: "none",
-            borderRadius: "6px",
-            padding: "0.75rem",
-            cursor: "pointer",
-            fontSize: "1rem",
-            fontWeight: "600",
-            transition: "background-color 0.2s ease",
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "#157a42")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.backgroundColor = "#189A52")
-          }
+          className="w-full bg-green-600 hover:bg-green-700 transition-colors text-white py-3 rounded-md text-base font-semibold shadow-md"
         >
           Enviar CSV
         </button>
