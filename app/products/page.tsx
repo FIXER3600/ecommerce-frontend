@@ -52,16 +52,60 @@ export default function CreateProductPage() {
   }
 
   return (
-    <div className="max-w-lg mx-auto my-12 p-8 bg-white rounded-xl shadow-lg border border-gray-200">
-      <h1 className="text-2xl font-bold mb-6 text-center text-green-700">Criar Produto</h1>
-      <form onSubmit={handleCreateProduct} className="flex flex-col gap-4">
+    <div
+      style={{
+        maxWidth: "500px",
+        margin: "3rem auto",
+        padding: "2rem",
+        backgroundColor: "#fff",
+        borderRadius: "8px",
+        boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+      }}
+    >
+      <h1
+        style={{
+          fontSize: "1.8rem",
+          fontWeight: "bold",
+          marginBottom: "1.5rem",
+          textAlign: "center",
+          color: "#189A52",
+        }}
+      >
+        Criar Produto
+      </h1>
+
+      <form
+        onSubmit={handleCreateProduct}
+        style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+      >
         <input
           type="text"
           placeholder="Nome do produto"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
-          className="p-3 rounded-md border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-green-500"
+          style={{
+            padding: "0.75rem",
+            borderRadius: "6px",
+            border: "1px solid #d1d5db",
+            fontSize: "1rem",
+            outline: "none",
+          }}
+        />
+
+        <textarea
+          placeholder="Descrição"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          required
+          style={{
+            padding: "0.75rem",
+            borderRadius: "6px",
+            border: "1px solid #d1d5db",
+            fontSize: "1rem",
+            outline: "none",
+            minHeight: "100px",
+          }}
         />
 
         <input
@@ -70,47 +114,105 @@ export default function CreateProductPage() {
           value={price}
           onChange={(e) => setPrice(Number(e.target.value))}
           required
-          className="p-3 rounded-md border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-green-500"
-        />
-
-        <textarea
-          placeholder="Descrição"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-          className="p-3 rounded-md border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-green-500 min-h-[120px]"
+          style={{
+            padding: "0.75rem",
+            borderRadius: "6px",
+            border: "1px solid #d1d5db",
+            fontSize: "1rem",
+            outline: "none",
+          }}
         />
 
         <input
-          type="url"
+          type="text"
           placeholder="URL da imagem"
           value={imageUrl}
           onChange={(e) => setImageUrl(e.target.value)}
           required
-          className="p-3 rounded-md border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-green-500"
+          style={{
+            padding: "0.75rem",
+            borderRadius: "6px",
+            border: "1px solid #d1d5db",
+            fontSize: "1rem",
+            outline: "none",
+          }}
         />
 
         <button
           type="submit"
-          className="w-full bg-green-600 hover:bg-green-700 transition-colors text-white py-3 rounded-md text-base font-semibold shadow-md"
+          style={{
+            width: "100%",
+            backgroundColor: "#189A52",
+            color: "#fff",
+            border: "none",
+            borderRadius: "6px",
+            padding: "0.75rem",
+            cursor: "pointer",
+            fontSize: "1rem",
+            fontWeight: "600",
+            transition: "background-color 0.2s ease",
+          }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.backgroundColor = "#157a42")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.backgroundColor = "#189A52")
+          }
         >
           Criar Produto
         </button>
       </form>
 
-      <hr className="my-8 border-gray-300" />
+      <hr style={{ margin: "2rem 0" }} />
 
-      <h2 className="text-xl font-bold mb-4 text-center text-green-700">Upload de CSV</h2>
-      <form onSubmit={handleUploadCsv} className="flex flex-col gap-4">
+      <h2
+        style={{
+          fontSize: "1.4rem",
+          fontWeight: "bold",
+          marginBottom: "1rem",
+          textAlign: "center",
+          color: "#189A52",
+        }}
+      >
+        Upload de CSV
+      </h2>
+
+      <form
+        onSubmit={handleUploadCsv}
+        style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+      >
         <input
           type="file"
           accept=".csv"
           onChange={(e) => setCsvFile(e.target.files?.[0] || null)}
-          className="p-2 rounded-md border border-gray-300 text-base"
+          style={{
+            padding: "0.5rem",
+            borderRadius: "6px",
+            border: "1px solid #d1d5db",
+            fontSize: "1rem",
+          }}
         />
+
         <button
           type="submit"
-          className="w-full bg-green-600 hover:bg-green-700 transition-colors text-white py-3 rounded-md text-base font-semibold shadow-md"
+          style={{
+            width: "100%",
+            backgroundColor: "#189A52",
+            color: "#fff",
+            border: "none",
+            borderRadius: "6px",
+            padding: "0.75rem",
+            cursor: "pointer",
+            fontSize: "1rem",
+            fontWeight: "600",
+            transition: "background-color 0.2s ease",
+          }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.backgroundColor = "#157a42")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.backgroundColor = "#189A52")
+          }
         >
           Enviar CSV
         </button>
