@@ -90,4 +90,3 @@ npm run start
 ## 🌐 Deploy
 O frontend está disponível em produção através do Vercel:  
 👉 [ecommerce-frontend-sooty-two.vercel.app](https://ecommerce-frontend-sooty-two.vercel.app)
-```
