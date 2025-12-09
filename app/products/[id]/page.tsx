@@ -13,41 +13,43 @@ export default function ProductPage() {
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState<"SELLER" | "CLIENT" | null>(null);
 
-useEffect(() => {
-  const storedRole = localStorage.getItem("role");
-  if (storedRole === "SELLER" || storedRole === "CLIENT") {
-    setRole(storedRole);
-  } else {
-    setRole(null);
-  }
-
-  async function fetchProduct() {
-    try {
-      const token = localStorage.getItem("token") || "";
-      const data = await apiFetch(`/products/${id}`, {}, token);
-      setProduct(data);
-    } catch (err: any) {
-      console.error(err);
-      setProduct(null);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    const storedRole = localStorage.getItem("role");
+    if (storedRole === "SELLER" || storedRole === "CLIENT") {
+      setRole(storedRole);
+    } else {
+      setRole(null);
     }
-  }
 
-  if (id) {
-    fetchProduct();
-  }
-}, [id]);
+    async function fetchProduct() {
+      try {
+        const token = localStorage.getItem("token") || "";
+        const data = await apiFetch(`/products/${id}`, {}, token);
+        setProduct(data);
+      } catch (err: any) {
+        console.error(err);
+        setProduct(null);
+      } finally {
+        setLoading(false);
+      }
+    }
 
+    if (id) {
+      fetchProduct();
+    }
+  }, [id]);
 
   async function handleAddToCart() {
     const token = localStorage.getItem("token") || "";
     try {
-      await apiFetch("/cart/items", {
-      method: "POST",
-      body: JSON.stringify({ productId: product.id, quantity: 1 }),
-      }, token);
-
+      await apiFetch(
+        "/cart/items",
+        {
+          method: "POST",
+          body: JSON.stringify({ productId: product.id, quantity: 1 }),
+        },
+        token
+      );
       alert("Produto adicionado ao carrinho!");
     } catch (err) {
       alert("Erro ao adicionar ao carrinho");
@@ -64,84 +66,44 @@ useEffect(() => {
   }
 
   if (loading) {
-    return <div style={{ padding: "2rem", textAlign: "center" }}>Carregando...</div>;
+    return (
+      <div className="flex items-center justify-center h-screen text-lg font-medium text-gray-700">
+        Carregando...
+      </div>
+    );
   }
 
   if (!product) {
-    return <div style={{ padding: "2rem", textAlign: "center", color: "#dc2626" }}>Produto não encontrado</div>;
+    return (
+      <div className="flex items-center justify-center h-screen text-lg font-semibold text-red-600">
+        Produto não encontrado
+      </div>
+    );
   }
 
   return (
-    <div
-      style={{
-        maxWidth: "800px",
-        margin: "2rem auto",
-        padding: "2rem",
-        border: "1px solid #e5e7eb",
-        borderRadius: "8px",
-        backgroundColor: "#f9fafb",
-        boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-      }}
-    >
-      <h1
-        style={{
-          fontSize: "2rem",
-          fontWeight: "bold",
-          marginBottom: "1rem",
-          color: "#111827",
-        }}
-      >
-        {product.name}
-      </h1>
+    <div className="max-w-3xl mx-auto my-10 p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+      <h1 className="text-3xl font-bold mb-6 text-gray-900">{product.name}</h1>
 
       {product.imageUrl && (
         <img
           src={product.imageUrl}
           alt={product.name}
-          style={{
-            width: "100%",
-            maxHeight: "400px",
-            objectFit: "cover",
-            borderRadius: "8px",
-            marginBottom: "1.5rem",
-          }}
+          className="w-full max-h-[450px] object-cover rounded-lg mb-6 shadow-md"
         />
       )}
 
-      <p
-        style={{
-          fontSize: "1.1rem",
-          color: "#374151",
-          marginBottom: "1rem",
-          lineHeight: "1.6",
-        }}
-      >
+      <p className="text-lg text-gray-700 leading-relaxed mb-6">
         {product.description}
       </p>
 
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <p
-          style={{
-            fontSize: "1.3rem",
-            fontWeight: "600",
-            color: "#16a34a",
-            marginBottom: "2rem",
-          }}
-        >
+      <div className="flex items-center justify-between">
+        <p className="text-2xl font-semibold text-green-600">
           Preço: R$ {product.price}
         </p>
         <button
-          style={{
-            backgroundColor: "#2563eb",
-            color: "#fff",
-            padding: "0.75rem 1.5rem",
-            borderRadius: "6px",
-            border: "none",
-            cursor: "pointer",
-            fontSize: "1rem",
-            fontWeight: "500",
-          }}
           onClick={handleAction}
+          className="bg-blue-600 hover:bg-blue-700 transition-colors text-white px-6 py-3 rounded-lg font-medium shadow-md"
         >
           {role === "CLIENT" ? "Adicionar ao Carrinho 🛒" : "Editar Produto ✏️"}
         </button>
