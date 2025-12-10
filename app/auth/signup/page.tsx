@@ -10,20 +10,26 @@ export default function SignUpPage() {
   const [role, setRole] = useState<"CLIENT" | "SELLER">("CLIENT");
   const [storeName, setStoreName] = useState("");
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    try {
-      const result = await apiFetch("/auth/signup", {
-        method: "POST",
-        body: JSON.stringify({ name, email, password, role, storeName }),
-      });
-      document.cookie = `token=${result.token}; path=/; secure; samesite=strict`;
-      localStorage.setItem("role", role);
-      window.location.href = "/";
-    } catch (err) {
-      alert("Erro ao cadastrar");
+async function handleSubmit(e: React.FormEvent) {
+  e.preventDefault();
+  try {
+    const result = await apiFetch("/auth/signup", {
+      method: "POST",
+      body: JSON.stringify({ name, email, password, role, storeName }),
+    });
+
+    if (!result?.token) {
+      throw new Error("Token não retornado pelo servidor");
     }
+
+    document.cookie = `token=${result.token}; path=/; secure; samesite=strict`;
+    localStorage.setItem("role", role);
+    window.location.href = "/";
+  } catch (err: any) {
+    alert("Erro ao cadastrar: " + err.message);
   }
+}
+
 
   return (
     <div
