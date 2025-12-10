@@ -28,6 +28,9 @@ export default function SignInPage() {
       localStorage.setItem("token", result.token);
       const decoded = jwtDecode<TokenPayload>(result.token);
       localStorage.setItem("role", decoded.role);
+      if (result.sellerId) {
+      localStorage.setItem("sellerId", result.sellerId);
+      }
       window.location.href = "/";
     } catch (err: any) {
       alert("Erro ao entrar: " + err.message);

@@ -24,6 +24,7 @@ async function handleSubmit(e: React.FormEvent) {
 
     document.cookie = `token=${result.token}; path=/; secure; samesite=strict`;
     localStorage.setItem("role", role);
+    localStorage.setItem("sellerId", result.sellerId || "");
     window.location.href = "/";
   } catch (err: any) {
     alert("Erro ao cadastrar: " + err.message);
