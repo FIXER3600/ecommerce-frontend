@@ -17,15 +17,22 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Tooltip, Le
 export default function Dashboard() {
   const [dashboard, setDashboard] = useState<any>(null);
 
-  useEffect(() => {
+useEffect(() => {
+  const token = localStorage.getItem("token") || "";
+  const sellerId = localStorage.getItem("sellerId") || "";
+  apiFetch(
+    "/seller/dashboard",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sellerId }),
+    },
+    token
+  )
+    .then(setDashboard)
+    .catch(console.error);
+}, []);
 
-    const token = localStorage.getItem("token") || "";
-    apiFetch("/seller/dashboard", {}, token)
-      .then(setDashboard)
-      .catch(console.error);
-      
-      
-  }, []);
 
   if (!dashboard) {
 
