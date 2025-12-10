@@ -24,9 +24,9 @@ export default function SignInPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-      document.cookie = `token=${result.token}; path=/; secure; samesite=strict`;
-      localStorage.setItem("token", result.token);
-      const decoded = jwtDecode<TokenPayload>(result.token);
+      document.cookie = `token=${result.token.token}; path=/; secure; samesite=strict`;
+      localStorage.setItem("token", result.token.token);
+      const decoded = jwtDecode<TokenPayload>(result.token.token);
       localStorage.setItem("role", decoded.role);
       if (result.sellerId) {
       localStorage.setItem("sellerId", result.sellerId);
