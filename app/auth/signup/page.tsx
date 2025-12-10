@@ -23,6 +23,7 @@ async function handleSubmit(e: React.FormEvent) {
     }
 
     document.cookie = `token=${result.token.token}; path=/; secure; samesite=strict`;
+    localStorage.setItem("token", result.token.token);
     localStorage.setItem("role", role);
     if (result.token.sellerId) {
       localStorage.setItem("sellerId", result.token.sellerId);
