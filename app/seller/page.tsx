@@ -20,18 +20,14 @@ export default function Dashboard() {
 useEffect(() => {
   const token = localStorage.getItem("token") || "";
   const sellerId = localStorage.getItem("sellerId") || "";
-  apiFetch(
-    "/seller/dashboard",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ sellerId }),
-    },
-    token
-  )
+
+  const url = `/seller/dashboard?sellerId=${sellerId}`;
+
+  apiFetch(url, { method: "GET" }, token)
     .then(setDashboard)
     .catch(console.error);
 }, []);
+
 
 
   if (!dashboard) {
