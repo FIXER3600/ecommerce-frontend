@@ -28,10 +28,7 @@ useEffect(() => {
     .catch(console.error);
 }, []);
 
-
-
   if (!dashboard) {
-
     return <p style={{ textAlign: "center" }}>Carregando dados...</p>;
   }
 
