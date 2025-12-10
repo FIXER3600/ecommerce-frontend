@@ -8,13 +8,14 @@ export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState<"CLIENT" | "SELLER">("CLIENT");
+  const [storeName, setStoreName] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
       const result = await apiFetch("/auth/signup", {
         method: "POST",
-        body: JSON.stringify({ name, email, password, role }),
+        body: JSON.stringify({ name, email, password, role, storeName }),
       });
       document.cookie = `token=${result.token}; path=/; secure; samesite=strict`;
       localStorage.setItem("role", role);
@@ -119,7 +120,22 @@ export default function SignUpPage() {
             Vendedor
           </label>
         </div>
-
+          {role === "SELLER" && (
+               <input
+          type="text"
+          placeholder="Nome da loja"
+          value={storeName}
+          onChange={(e) => setStoreName(e.target.value)}
+          required
+          style={{
+            padding: "0.75rem",
+            borderRadius: "6px",
+            border: "1px solid #d1d5db",
+            fontSize: "1rem",
+            outline: "none",
+          }}
+        />
+          )}
         <button
           type="submit"
           style={{
