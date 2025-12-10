@@ -22,9 +22,11 @@ async function handleSubmit(e: React.FormEvent) {
       throw new Error("Token não retornado pelo servidor");
     }
 
-    document.cookie = `token=${result.token}; path=/; secure; samesite=strict`;
+    document.cookie = `token=${result.token.token}; path=/; secure; samesite=strict`;
     localStorage.setItem("role", role);
-    localStorage.setItem("sellerId", result.sellerId || "");
+    if (result.token.sellerId) {
+      localStorage.setItem("sellerId", result.token.sellerId);
+    }
     window.location.href = "/";
   } catch (err: any) {
     alert("Erro ao cadastrar: " + err.message);

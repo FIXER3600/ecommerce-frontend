@@ -28,8 +28,8 @@ export default function SignInPage() {
       localStorage.setItem("token", result.token.token);
       const decoded = jwtDecode<TokenPayload>(result.token.token);
       localStorage.setItem("role", decoded.role);
-      if (result.sellerId) {
-      localStorage.setItem("sellerId", result.sellerId);
+      if (result.token.sellerId) {
+      localStorage.setItem("sellerId", result.token.sellerId);
       }
       window.location.href = "/";
     } catch (err: any) {

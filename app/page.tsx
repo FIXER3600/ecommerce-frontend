@@ -41,11 +41,31 @@ export default function Home() {
       >
         Catálogo
       </h1>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", justifyContent: "center" }}>
-        {products?.items.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+      <div
+  style={{
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "1rem",
+    justifyContent: "center",
+  }}
+>
+  {products?.items && products.items.length > 0 ? (
+    products.items.map((product) => (
+      <ProductCard key={product.id} product={product} />
+    ))
+  ) : (
+    <p
+      style={{
+        fontSize: "1.1rem",
+        color: "#6b7280",
+        textAlign: "center",
+        marginTop: "2rem",
+      }}
+    >
+      Ainda não foram adicionados produtos.
+    </p>
+  )}
+</div>
     </div>
   );
 }

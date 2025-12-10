@@ -34,6 +34,10 @@ export default function AccountMenu({ role }: { role: "SELLER" | "CLIENT" | null
 	const confirmed = window.confirm("Tem certeza que deseja sair?");
     	if (!confirmed) return;
 	localStorage.removeItem("token");
+  if (role === "SELLER") {
+  localStorage.removeItem("sellerId");
+  localStorage.removeItem("role");
+  }
 	window.location.href = "/auth/signin";
   }
 
